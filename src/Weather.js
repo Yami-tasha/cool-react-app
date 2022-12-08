@@ -7,11 +7,12 @@ export default function Weather(props) {
     function handleResponse(response) {
         setWeatherData({
             ready: true,
+            date: new Date(response.data.time),
             temperature: response.data.temperature.current,
             humidity: response.data.temperature.humidity,
             date: "Wednesday 07:00",
             description: response.data.condition.description,
-            icon: response.data.condition.icon_url,
+            iconUrl: response.data.condition.icon_url,
             wind: response.data.wind.speed,
             city: response.data.city
         });
@@ -37,7 +38,7 @@ export default function Weather(props) {
                 </form>
                 <h1>{weatherData.city}</h1>
                 <ul>
-                    <li>{weatherData.date}</li>
+                    <li>{weatherData.date.getDay}</li>
                     <li className="text-capitalize">{weatherData.description}</li>
                 </ul>
                 <div className="row mt-3">
