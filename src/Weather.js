@@ -1,23 +1,25 @@
 import React, { useState } from "react";
+import FormatDate from "./FormatDate"
 import axios from "axios";
 import "./Weather.css";
-import FormatDate from "./FormatDate";
 
 export default function Weather(props) {
-    const [weatherData, setWeatherData] = useState({ ready: false});
-    function handleResponse(response) {
-        console.log(response.data);
-        setWeatherData({
-            ready: true,
-            date: new Date(response.data.time),
-            temperature: response.data.temperature.current,
-            humidity: response.data.temperature.humidity,
-            description: response.data.condition.description,
-            iconUrl: response.data.condition.icon_url,
-            wind: response.data.wind.speed,
-            city: response.data.city
-        });
-    }
+  const [weatherData, setWeatherData] = useState({ ready: false });
+  const [city, setCity] = useState(props.defaultCity);
+
+  function handleResponse(response) {
+    setWeatherData({
+      ready: true,
+      coordinates: response.data.coord,
+      temperature: response.data.main.temp,
+      humidity: response.data.main.humidity,
+      date: new Date(response.data.dt * 1000),
+      description: response.data.weather[0].description,
+      iconUrl: response.data.weather[0].icon,
+      wind: response.data.wind.speed,
+      city: response.data.name,
+    });
+  }
 
     if (weatherData.ready) {
         return (
@@ -55,7 +57,7 @@ export default function Weather(props) {
                     </div>
                         <div className="col-6">
                             <ul>
-                                <li>Humidity: {weatherData.humidity}</li>
+                                <li>Humidity: {weatherData.humidity}%</li>
                                 <li>Wind: {Math.round(weatherData.wind)} km/h</li>
                             </ul>
                     </div>
@@ -63,9 +65,8 @@ export default function Weather(props) {
             </div>
         )
     } else {
-        const apiKey = "98t4fbbd8522b07740a7dab0ddeo035a";
-        let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${props.defaultCity}&key=${apiKey}&units=metric
-        `;
+        const apiKey = "a0d03cacc138649973b20df80763e262";
+        let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
         axios.get(apiUrl).then(handleResponse);
 
         return "Loading..."
