@@ -28,7 +28,7 @@ function day() {
           </div>
           <div className="WeatherForecast-temperatures">
            <span className="WeatherForecast-temperature-max">{maxTemp()}{" "}</span>
-           <span className="WeatherForecast-temperature-min opacity-75">{minTemp()}</span>
+           <span className="WeatherForecast-temperature-min opacity-50">{minTemp()}</span>
           </div>
         </div>
     );

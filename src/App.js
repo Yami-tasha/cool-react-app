@@ -8,8 +8,7 @@ export default function App() {
       <div className="container">
         <Weather defaultCity="Paris" />
   <footer>
-    This project was created by Nataliia Rubtsova and is {" "}
-    <a rel="noreferrer" href="https://github.com/Yami-tasha/cool-react-app" target="_blank">open-sourced on GitHab</a>
+  <a rel="noreferrer" href="https://github.com/Yami-tasha/cool-react-app" target="_blank">Open-sours code</a> by Yami_tasha
   </footer>
     </div>
     </div>
