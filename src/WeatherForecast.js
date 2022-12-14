@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import WeatherIcon from "./WeatherIcon";
+import React, { useState, useEffect } from "react";
 import"./WeatherForecast.css";
+import WeatherForecastDaily from "./WeatherForecastDaily";
 import axios from "axios";
 
 export default function WeatherForecast(props) {
     let [loaded, setLoaded] = useState(false);
     let [forecast, setForecast] = useState(null);
+
+    useEffect(() => {
+        setLoaded(false);
+       }, [props.coordinates]);
+     
 
     function handleResponse (response) {
         setForecast(response.data.daily);
@@ -18,16 +23,19 @@ export default function WeatherForecast(props) {
             <div className="WeatherForecast">
                 <div className="rov">
                 <div className="col d-flex flex-column align-items-center mt-3">
-                       <div className="WeatherForecast-day">Thursday</div> 
-                       <div className="mt-2">
-                       <WeatherIcon code="01d" size={36} /> 
-                       </div>
-                       <div className="WeatherForecast-temperatures mt-3">
-                        <span className="WeatherForecast-temperature-max ">19°{" "}</span>
-                        <span className="WeatherForecast-temperature-min opacity-75">10°</span>
-                       </div>
-                    </div>
+                {forecast.map(function(dailyForecast, index) {
+          if (index < 5) {
+            return (
+              <div key={index} className="col Forecast-Day">
+                <WeatherForecastDaily data={dailyForecast} />
+              </div>
+            );
+          }
+          return null;
+         })}
+                
                 </div>
+            </div>
             </div>
          );
     } else {
@@ -37,7 +45,5 @@ export default function WeatherForecast(props) {
         let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
     
     axios.get(apiUrl).then(handleResponse);
-
-    return null; 
     }
 }
